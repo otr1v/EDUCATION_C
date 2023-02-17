@@ -5,3 +5,15 @@
 //in this function it is compulsory to fill lust argument multiplying by sizeof(elem)
 
 // fprintf(FILE* fp, "text like in printf", numbers if there are any identificators (%))
+
+// some info about strings, it is better to work with args of str, not with return value, because c doesnt like temporary strings
+// and when arg of func is string you are already work with adress, so convinient
+
+//structers:
+typedef struct node {
+  struct node* left;
+}Node;                    // here node is needed only for structure element, if there is no need to add some args of structure using this type of structure
+        // you should use this
+typedef struct  {
+  int left;
+}Node;    
