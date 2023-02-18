@@ -50,4 +50,13 @@ typedef struct  {
 //  float const * pfc == const float * pfc
 //  то есть если слева конст от *, то делаются конст данные, а если конст справа от *, то указатель будет постоянным
 
+ 
+//fseek fseek(file, position connected to the third arg, 3rd)  and ftell(file)
+//  3rd can be:
+//  SEEK_SET - from the beggining of the file
+//  SEEK_CUR - from the current place in the file
+//  SEEK_END - from the end of the file
+//  fseek ret value is 0 if all is ok, -1 - if not all is ok
+//  2nd arg is (long)arg, 1L - 1 byte after our position, 10L - 10 bytes and etc, also can be < 0
+//  ftell(fp) tells us where we are now in long type
 
