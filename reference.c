@@ -60,3 +60,13 @@ typedef struct  {
 //  2nd arg is (long)arg, 1L - 1 byte after our position, 10L - 10 bytes and etc, also can be < 0
 //  ftell(fp) tells us where we are now in long type
 
+// static - область видимости внутри файла,и не мржет использоваться вне файла, в отличие от обычного объявления
+// если объявить статик внутри функции, то память под нее будет выделена только один раз
+// и она будет сохранять значения до след вызова этой же функции
+
+
+// enum spectrum (red, orange, yellow, green, bluе, violet); in main: enum spectrum color;
+
+
+//fputs не добавит символ новой строки (слеш эн), а путс добавит, но мб если чтение через fgets
+// то тогда она может сохранить слеш эн к себе в буфер и потом фпутс напечатает его в консоль
