@@ -66,3 +66,120 @@ void print(int (*numbers)[3]);   - двумерный массив
 
 ////
 
+int main()
+{
+    void (*message)();  // определение указателя на функцию   != void* message(не указатель на функцию, а прототип функции, которая возвращает void*)
+      
+    message=hello;
+    message();
+    message = goodbye;
+    message();
+}
+
+int operation(int(*op)(int, int), int a, int b), можно сделать так: operation(add, a, b), где add - функция, складывающая два числа
+callback function - function add, which called from function operation, при этом не нужно указывать аргументы функции, когда функция callback передается в параметрах
+оператор  auto может заменить длинное название функции
+
+using BinaryOp = int (*)(int, int);
+int sum(int, int);
+int subtract(int, int);
+void do_operation(int, int, BinaryOp); BinaryOp - указатель на функцию , которая вернет int, и принимает аргументы в виде двух интов
+ 
+//
+void(*message(unsigned hour))()
+{
+    if (hour > 15)
+        return goodevening;    //goodevening - function, returns void
+    else                        // message - name of func
+        return goodmorning;
+}
+
+////
+
+std::string message {"Hello"};
+extern std::string message; extern - key word to include in file with constans, you should compile two files together
+
+////
+dynamic objects :
+
+dynamic memory int* ptr = new int(); - value of *ptr is 0 int* ptr = new int(5);
+dangling pointer -  висящий указатель, которыйй даже после операции delete имеет функцию обращения к нему
+ обнулять указетель после операции delete!!
+аналогично, вроде, и в языке С
+
+///
+ dynamic arrays:
+int *numbers1 {new int[4]{}}; - each element of numbers1 equals 1;
+int *numbers2 {new int[4]{ 1, 2, 3, 4 }};
+C++ 20 подразумевает, что можно не писать количество элементов при инициализации массива, он сам все поймет!
+ delete [] p; - how to make free array p -> after it p = nullptr
+int (*a)[2] = new int[n][2]; - фиксированно количество столбцов
+
+ как объявить память под двумерный массив: 
+ int** numbers{new int*[rows]{}}; 
+    for (unsigned i{}; i < rows; i++)
+    {
+        numbers[i] = new int[columns]{};
+    }
+///
+
+smart pointers:   (#include <memory>)
+unique_ptr - it cant be two different ptrs, those are pointers for the same object, and no need for delete and dangling pointer
+default value for unique ptr is nullptr
+ if ptr is unique ptr -> and we need to get simple pointer from ptr we should use ptr.get()
+ after standard c++20 we can use just ptr to print the value of ptr
+initialization is like std::unique_ptr<int> ptr { std::make_unique<int>(125) }; - using func make after c++14 standard
+ if we need to use unique ptr for arrays:
+unsigned n{5};   // размер массива
+auto pnumbers { std::make_unique<int[]>(n) }; all elems equals to zero
+
+ptr.reset(new int{254}); // сразу же выделяем память под новый объект, освобождая память под старый
+
+shared_ptr:
+default value is nullptr, counting references, those are pointers for the same objects
+std::shared_ptr<int> ptr {std::make_shared<int>(22)};  IT MEANS THAT *ptr == 22
+ shared ptr can be pointer to array since C++20
+
+
+////
+
+ OOP:
+classes: 
+i can use this construction to define different classes:   // it names delegation of constructor
+    Person(std::string p_name, unsigned p_age)
+    {
+        name = p_name;
+        age = p_age;
+        std::cout << "First constructor" << std::endl;
+    }
+    Person(std::string p_name): Person(p_name, 18) // вызов первого конструктора
+    {
+        std::cout << "Second constructor" << std::endl;
+    }
+    Person(): Person(std::string("Undefined")) // вызов второго конструктора
+    { 
+        std::cout << "Third constructor" << std::endl;
+    }
+
+списки инициализации для констант!
+
+ 
+class Person 
+{
+    const std::string name;
+    unsigned age{};
+public:
+    void print() 
+    {
+        std::cout << "Name: " << name << "\tAge: " << age << std::endl;
+    }
+    Person(std::string p_name, unsigned p_age) : name{p_name}    // or like this : name (p_name), compulsory to use it with constants
+    {                                                            // but can be used for simple variables
+        age = p_age;                                             //  order make sense!!!
+    }
+};
+int main()
+{
+    Person tom{"Tom", 38};
+    tom.print();    // Name: Tom    Age: 38
+}
