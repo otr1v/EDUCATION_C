@@ -183,3 +183,97 @@ int main()
     Person tom{"Tom", 38};
     tom.print();    // Name: Tom    Age: 38
 }
+
+конструктор может быть спокойно вынесен за пределы класса, таким образом:
+class Person{
+
+};
+Person::Person(std::string p_name, unsigned p_age){...}
+
+
+COPY CONSTRUCTOR 
+существует такая вещь, как конструктор копирования, которая может быть вызвана по умолчанию
+Но в таком случае, если там будет указатель, то скопируется указатель на тот же объект 
+Можно строить свой конструктор копирования, где так не будет
+Person(const Person &p)
+    {
+        name = p.name;
+        age = p.age + 1;    
+    }
+также конструктор копирования можно удалить, даже тот который по умолчанию, можно это сделать так:
+Person(const Person &p) = delete;
+
+////
+CONST OBJECTS OF CLASSES
+константные объекты класса:
+объекты класса могут быть константными: const Person tom{"Tom", 38}; - нельзя менять его поля
+для константых объектов нельзя вызывать любые функции, кроме константных, т.е. таких: void print() const {...}
+компилятор не понимает, какие функции не меняют объекты, поэтому это слово обязательно надо указывать
+mutable - чтобы даже объекты константного класса можно было менять: mutable unsigned age;  
+
+///
+THIS
+ 
+this->...
+ can be used if the name of variable is similar to the object of the class
+if you want to do like this: 
+p1.move(1, 2).move(2, 3);
+ you should use :
+Point& move(int x, int y)
+    {
+        this->x += x;
+        this->y += y;
+        return *this;
+    }
+ссылка на поинт очень важна, иначе возвращаемый объект будет копией p1, т.е. : 
+ Point temp = p1.move(10, 5);
+temp.move(10, 10);
+если же вот так хочется сделать, т.е. вернуть указатель:
+  Point* move(int x, int y)
+    {
+        this->x += x;
+        this->y += y;
+        return this;
+    }
+то надо будет писать так:
+p1->move(1, 2)->move(2, 3);
+
+///
+FRIEND CLASSES AND FUNCTIONS, OBJECTS
+дружественные функции: их прототип находится внутри класса с ключевым словом friend, но определяютяся они вне класса и 
+имеют доступ к закрытым полям класса!
+ причем их вызов не идет через сам класс, то есть это не методы класса
+ а когда нужно обратиться из этих функций к полям класса нужно применять конструкцию вида car.price, если класс имеет название car
+ если же мы хотим определить функцию дружественную из другого класса, то нужно писать конструкцию вида friend void car::name(int a, int b)
+reference to this feature: https://metanit.com/cpp/tutorial/5.5.php
+также существуют и дружественные классы
+
+///
+STATIC OBJECTS
+static variables doesnt refer to the exact element, they can be used to count different objects
+static inline 
+static functions is used for wworking with static variables
+if static variable is public, we can use Person::max_age , where person is the name of the class, max_age - static var
+ or another variant is to type like sam.max_age to print this static value
+
+///
+DESTRUCTORS
+every class has only one destructor
+if there is no destructor compiler uses default destructor
+destructor works when:
+scope is ended
+array of objects has been deleted
+deletes object, where is defined objects of our exact class
+
+///
+STRUCTERS
+structers are used when we have public objects and functions
+
+///
+ENUM
+
+enum class Day {Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday}, а создать переменную можно так Day today{Day::Monday}
+ нумеровка enum автоматически начинается с нуля, причем чтобы вывести в консоль значение переменной тудей надо написать так:
+std::cout << static_cast<int>(today)
+в си++ лучше не использовать такой же enum как в С, потому что может вести к ошибкам
+в С++20 добавлена функция, чтобы вместо Day::Monday писать using enum Day; or using enum Day::Monday;
