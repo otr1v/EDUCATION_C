@@ -348,3 +348,39 @@ it's like private class for outside, but public for inheritance, so you can use 
 VIRTUAL: 
 Если у нас есть родительский класс Person, дочерний класс Student, Employee, и эти два класса имеют дочерний класс studentEmployee, тогда конструктор Person , будет вызываться дважды
 а функция print в классе Person вообще не сможет вызваться, в таком случае нам нужно будет указать при наследовании классов student and employee class student: public virtual person
+
+VIRTUAL FUNCTIONS:
+
+dynamic binding and static blinding - static when a compiler chooses what function the user want to call
+and when you have static binding, inherited class hides the function from the basic class
+dynamic binding adds virtual functions, and when you define function in inherited class - you redefine the function
+class that inherits vitual function names as polymorphic class
+if function(inherited) has different args or different type(const and non const) it becomes static function and hides function from basic class
+when you definitely need to redefine function you should use word override in inherited class: void print() const override
+we need override to make more mistakes(you says to compiler that you need to redefine the func, else -> compiler gives an error)
+
+we need to type final after the func if we dont want to have the same func in inherited class:
+virtual void print() const final
+
+TYPE CAST
+when we need to make our inherited class object as basic object we can show it for everyone(obviously) like that:
+int main()
+{
+    Employee employee{"Bob"};
+    employee.print();    // Person: Bob
+ 
+    // преобразуем в базовый тип
+    Person person1{static_cast<Person>(employee)};    // через конструктор копирования
+    person1.print();        // Person: Bob
+ 
+    Person person2{"Tom"};
+    person2 = static_cast<Person>(employee);   // через операцию присваивания
+    person2.print();        // Person: Bob
+}
+
+dont try to use cast from basic class to inherited
+
+DYNAMIC CAST
+
+dynamic_cast<тип_в_который_преобразуем>(преобразуемый_объект) calling dynamic cast as static cast
+
