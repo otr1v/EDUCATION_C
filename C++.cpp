@@ -251,8 +251,8 @@ reference to this feature: https://metanit.com/cpp/tutorial/5.5.php
 
 ///
 STATIC OBJECTS
-static variables doesnt refer to the exact element, they can be used to count different objects
-static inline 
+static variables doesnt refer to the exact element, they can be used to count different objects - то есть счетчик количества элементов например
+static inline нужно указывать ключевое слово inline
 static functions is used for wworking with static variables
 if static variable is public, we can use Person::max_age , where person is the name of the class, max_age - static var
  or another variant is to type like sam.max_age to print this static value
@@ -570,3 +570,21 @@ private:
     std::string name;
 };
 с помощью функции setId мы можем указать тип T кроме инта, который нам нужен
+
+для шаблонов можно сделать специализацию, чтобы подставлять конкретный тип иногда, если нужно
+для этого необходимо указать так template<>
+причем в таком случае будет два раза определен класс, сначала для шаблона, а потом для специализации шаблона
+также возможна частичная специализация, когда только один из двух параметров ьудет идти со специальным типом нужным нам
+
+Наследование шаблонных классов:
+При наследовании необходимо указать следующим образом:
+template <typename T>
+class Employee: public Person<T>
+причем каждый раз при обращение к функциональности класса мы должны писать следующим образом:
+Person<T>{id, name}   // вызов конструктора
+Person<T>::print();   // вызов функции print
+Person<T>::name       // обращение к переменной name базового класса Person
+можно также указать явным образом наследование:
+сlass Employee: public Person<unsigned> 
+значение в базовом классе будет определяться значением в производном классе employee
+ 
